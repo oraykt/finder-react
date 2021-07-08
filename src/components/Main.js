@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import Navbar from './Navbar'
-import User from './User'
+import Users from './Users'
 
 
 export class Main extends Component {
@@ -8,7 +8,7 @@ export class Main extends Component {
     return (
       <div className="container">
         <Navbar />
-        <User />
+        <Users />
       </div>
     )
   }
