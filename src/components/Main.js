@@ -7,14 +7,17 @@ export class Main extends Component {
   constructor(props) {
     super(props)
     this.state = {
+      loading: false,
       users: []
     }
   }
 
   componentDidMount() {
+    this.setState({ loading:true })
     axios.get('https://api.github.com/users').then(res => {
       this.setState({
-        users: res.data
+        users: res.data,
+        loading: false
       })
     }).catch(exception => {
       console.error(exception)
@@ -25,7 +28,7 @@ export class Main extends Component {
     return (
       <div className="container">
         <Navbar />
-        <Users users={this.state.users} />
+        <Users users={this.state.users} loading={this.state.loading} />
       </div>
     )
   }
