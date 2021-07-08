@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import './styles/main.scss'
+import Main from './components/Main'
 
 
-
-ReactDOM.render(React.createElement('h1', {}, 'Hello World!' ), document.getElementById('root'));
+ReactDOM.render(<Main />, document.getElementById('root'));
