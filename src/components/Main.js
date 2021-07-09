@@ -49,7 +49,6 @@ export class Main extends Component {
   render() {
     return (
       <div className="container">
-        <Navbar />
         <Search searchUsers={this.searchUsers} clearUsers={this.clearUsers} showClearButton={this.state.users.length > 0}/>
         <Users users={this.state.users} loading={this.state.loading} />
       </div>
