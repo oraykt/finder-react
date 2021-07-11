@@ -2,7 +2,7 @@
   "name": "finder-react",
   "version": "1.0.0",
   "description": "",
-  "main": "app.js",
+  "main": "index.js",
   "scripts": {
     "webpack-build": "webpack --mode production",
     "dev": "webpack-dev-server --open",
