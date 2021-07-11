@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 
 const Search =  ({searchUsers, showClearButton,clearUsers})=> {
   
-  const [keyword, setKeyword] = useState()
+  const [keyword, setKeyword] = useState('')
 
   const onChange = (e) => {
     setKeyword(e.target.value)

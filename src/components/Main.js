@@ -1,5 +1,5 @@
-import React, { Component } from 'react'
-import {BrowserRouter, Route, Switch, Link } from 'react-router-dom'
+import React, { useState, useEffect } from 'react'
+import {BrowserRouter, Route, Switch } from 'react-router-dom'
 import axios from 'axios'
 import Navbar from './Navbar'
 import Users from './Users'
@@ -7,108 +7,85 @@ import Search from './Search'
 import AboutPage from './About'
 import UserDetails from './UserDetails'
 
-export class Main extends Component {
-  constructor(props) {
-    super(props)
-    this.getUser = this.getUser.bind(this)
-    this.getUserRepos = this.getUserRepos.bind(this)
-    this.searchUsers = this.searchUsers.bind(this)
-    this.clearUsers = this.clearUsers.bind(this)
-    this.state = {
-      loading: false,
-      users: [],
-      user: {},
-      repos: []
-    }
-  }
 
-  componentDidMount() {
-    this.setState({ loading:true })
+const Main = () =>{
+
+  const [users, setUsers] = useState([])
+  const [user, setUser] = useState({})
+  const [loading, setLoading] = useState(false)
+  const [repos, setRepos] = useState([])
+
+  useEffect(() => {
+    setLoading(true)
     axios.get('https://api.github.com/users').then(res => {
-      this.setState({
-        users: res.data,
-        loading: false
-      })
+      setUsers(res.data)
+      setLoading(false)
     }).catch(exception => {
-      this.setState({ loading: true })
       console.error(exception)
     })
-  }
+  },[])
 
-  getUser(username) {
-    this.setState({ loading: true })
+  const getUser = (username) => {
+    setLoading(true)
     axios.get(`https://api.github.com/users/${username}`)
       .then(res => {
-        this.setState({
-        user: res.data,
-        loading: false
-        })
+        setUser(res.data)
+        setLoading(false)
       }).catch(exception => {
-        this.setState({ loading: true })
         console.error(exception)
       })
   }
 
-  getUserRepos(username) {
-    this.setState({ loading: true })
+  const getUserRepos = (username) => {
+    setLoading(true)
     axios.get(`https://api.github.com/users/${username}/repos`)
       .then(res => {
-        this.setState({
-        repos: res.data,
-        loading: false
-        })
+        setRepos(res.data)
+        setLoading(false)
       }).catch(exception => {
-        this.setState({ loading: true })
         console.error(exception)
       })
   }
 
-  searchUsers(keyword) {
-    this.setState({ loading:true })
+  const searchUsers = (keyword) => {
+    setLoading(true)
     axios.get(`https://api.github.com/search/users?q=${keyword}`)
       .then(res => {
-        this.setState({
-        users: res.data.items,
-        loading: false
-        })
+        setUsers(res.data.items)
+        setLoading(false)
       }).catch(exception => {
-        this.setState({ loading: true })
         console.error(exception)
       })
   }
 
-  clearUsers() {
-    this.setState({
-      users: []
-    })
+  const clearUsers = () => {
+    setUsers([])
   }
-
-  render() {
-    return (
-      <BrowserRouter>
-        <Navbar />
-        <Switch>
-          <Route exact path="/" component={props=>(
-            <div className="container">
-              <Search searchUsers={this.searchUsers} clearUsers={this.clearUsers} showClearButton={this.state.users.length > 0}/>
-              <Users users={this.state.users} loading={this.state.loading} />
-            </div>  
-          )} />
-          <Route path="/about" component={AboutPage} />
-          <Route path="/user/:login" render={props => (
-            <UserDetails
-              {...props}
-              getUser={this.getUser}
-              getUserRepos={this.getUserRepos}
-              user={this.state.user}
-              loading={this.state.loading}
-              repos={this.state.repos}
-            />
-          )} />
-        </Switch>
-      </BrowserRouter>
-    )
-  }
+  return (
+    <BrowserRouter>
+      <Navbar />
+      <Switch>
+        <Route exact path="/" component={props=>(
+          <div className="container">
+            <Search searchUsers={searchUsers} clearUsers={clearUsers} showClearButton={users.length > 0}/>
+            <Users users={users} loading={loading} />
+          </div>  
+        )} />
+        <Route path="/about" component={AboutPage} />
+        <Route path="/user/:login" render={props => (
+          <UserDetails
+            {...props}
+            getUser={getUser}
+            getUserRepos={getUserRepos}
+            user={user}
+            loading={loading}
+            repos={repos}
+          />
+        )} />
+      </Switch>
+    </BrowserRouter>
+  )
 }
+
 
 export default Main
