@@ -1,10 +1,10 @@
-import React, {useEffect} from 'react'
+import React from 'react'
 import {BrowserRouter, Route, Switch } from 'react-router-dom'
 import Navbar from './Navbar'
-import Users from './Users'
-import Search from './Search'
+import HomePage from './Home'
 import AboutPage from './About'
 import UserDetails from './UserDetails'
+import NotFound from './NotFound'
 import GithubState from '../context/githubState'
 
 const Main = () =>{
@@ -24,14 +24,10 @@ const Main = () =>{
       <BrowserRouter>
         <Navbar />
         <Switch>
-          <Route exact path="/" component={props=>(
-            <div className="container">
-              <Search />
-              <Users />
-            </div>  
-          )} />
+          <Route exact path="/" component={HomePage} />
           <Route path="/about" component={AboutPage} />
           <Route path="/user/:login" component={UserDetails} />
+          <Route component={NotFound} />
         </Switch>
       </BrowserRouter>
     </GithubState>
