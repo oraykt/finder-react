@@ -1,14 +1,15 @@
-import React, { useEffect, Fragment } from 'react'
+import React, { useEffect, Fragment, useContext } from 'react'
 import { Link } from 'react-router-dom'
 import Loading from './Loading'
 import Repos from './Repos'
+import GithubContext from '../context/githubContext'
 
-const UserDetails = ({getUser, getUserRepos, match, loading, user, repos}) => {
-  
+const UserDetails = ({getUserRepos, match, repos}) => {
+  const { user, getUser, loading } = useContext(GithubContext)
   useEffect(() => {
     getUser(match.params.login)
     getUserRepos(match.params.login)
-  },[])
+  },[match.params.login])
 
   if (loading) return <Loading />
   

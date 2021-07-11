@@ -30,13 +30,34 @@ const GithubState = (props) => {
       })
   }
 
+  const clearUsers = () => {
+    dispatch({
+      type: "CLEAR_USERS"
+    })
+  }
+
+  const getUser = (username) => {
+    setLoading()
+    axios.get(`https://api.github.com/users/${username}`)
+      .then(res => {
+        dispatch({
+          type: "GET_USER",
+          payload: res.data
+        })
+      }).catch(exception => {
+        console.error(exception)
+      })
+  }
+
   return <GithubContext.Provider
     value={{
       users: state.users,
       user: state.user,
       repos: state.repos,
       loading: state.loading,
-      searchUsers
+      getUser,
+      searchUsers,
+      clearUsers
     }}>
     {props.children}
   </GithubContext.Provider>

@@ -10,8 +10,6 @@ import GithubState from '../context/githubState'
 
 const Main = () =>{
 
-  const [users, setUsers] = useState([])
-  const [user, setUser] = useState({})
   const [loading, setLoading] = useState(false)
   const [repos, setRepos] = useState([])
 
@@ -25,16 +23,6 @@ const Main = () =>{
   //   })
   // },[])
 
-  const getUser = (username) => {
-    setLoading(true)
-    axios.get(`https://api.github.com/users/${username}`)
-      .then(res => {
-        setUser(res.data)
-        setLoading(false)
-      }).catch(exception => {
-        console.error(exception)
-      })
-  }
 
   const getUserRepos = (username) => {
     setLoading(true)
@@ -47,9 +35,6 @@ const Main = () =>{
       })
   }
 
-  const clearUsers = () => {
-    setUsers([])
-  }
   return (
     <GithubState>
       <BrowserRouter>
@@ -57,7 +42,7 @@ const Main = () =>{
         <Switch>
           <Route exact path="/" component={props=>(
             <div className="container">
-              <Search clearUsers={clearUsers} showClearButton={users.length > 0}/>
+              <Search />
               <Users />
             </div>  
           )} />
@@ -65,10 +50,7 @@ const Main = () =>{
           <Route path="/user/:login" render={props => (
             <UserDetails
               {...props}
-              getUser={getUser}
               getUserRepos={getUserRepos}
-              user={user}
-              loading={loading}
               repos={repos}
             />
           )} />
