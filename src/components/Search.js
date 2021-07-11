@@ -1,48 +1,37 @@
-import React, { Component, Fragment } from 'react'
+import React, { useState } from 'react'
 
-class Search extends Component {
-  constructor(props) {
-    super(props)
-    this.onChange= this.onChange.bind(this)
-    this.onSubmit= this.onSubmit.bind(this)
-    this.state = {
-      keyword:''
-    }
+const Search =  ({searchUsers, showClearButton,clearUsers})=> {
+  
+  const [keyword, setKeyword] = useState()
+
+  const onChange = (e) => {
+    setKeyword(e.target.value)
   }
 
-  onChange(e) {
-    this.setState({
-      keyword: e.target.value
-    })
-  }
-
-  onSubmit(e) {
+  const onSubmit = e => {
     e.preventDefault()
-    if (!this.state.keyword) {
+    if (!keyword) {
       alert('Please type username')
     } else {
-      this.props.searchUsers(this.state.keyword)
-      this.setState({ keyword: '' })
+      searchUsers(keyword)
+      setKeyword('')
     }
   }
-
-  render() {
-    return (
-      <div className="container my-3">
-        <form onSubmit={this.onSubmit}>
-          <div className="input-group">
-            <input type="text" value={ this.state.keyword } className="form-control" onChange={this.onChange} placeholder="Please type Github username"/>
-            <div className="input-group-append">
-              <button type="submit" className="btn btn-info">Search</button>
-            </div>
+  
+  return (
+    <div className="container my-3">
+      <form onSubmit={onSubmit}>
+        <div className="input-group">
+          <input type="text" value={ keyword } className="form-control" onChange={onChange} placeholder="Please type Github username"/>
+          <div className="input-group-append">
+            <button type="submit" className="btn btn-info">Search</button>
           </div>
-        </form>
-        
-        {this.props.showClearButton && <button className="btn btn-secondary btn-sm btn-block mt-2" onClick={this.props.clearUsers}>Clear Results</button>}
-        
-      </div>
-    )
-  }
+        </div>
+      </form>
+      
+      {showClearButton && <button className="btn btn-secondary btn-sm btn-block mt-2" onClick={clearUsers}>Clear Results</button>}
+    </div>
+  )
 }
 
 export default Search
