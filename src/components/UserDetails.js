@@ -4,8 +4,8 @@ import Loading from './Loading'
 import Repos from './Repos'
 import GithubContext from '../context/githubContext'
 
-const UserDetails = ({getUserRepos, match, repos}) => {
-  const { user, getUser, loading } = useContext(GithubContext)
+const UserDetails = ({match}) => {
+  const { user, getUser, loading, repos, getUserRepos } = useContext(GithubContext)
   useEffect(() => {
     getUser(match.params.login)
     getUserRepos(match.params.login)
